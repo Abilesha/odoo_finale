@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    @apply bg-sand-100 text-ink font-sans antialiased;
+  }
+  h1, h2, h3 { @apply font-display tracking-tight; }
+  /* numbers line up in tables and never wrap mid-figure */
+  .tnum { font-variant-numeric: tabular-nums; white-space: nowrap; }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl border border-sand-200 shadow-card;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2
+           text-sm font-medium transition-colors disabled:opacity-40
+           disabled:pointer-events-none whitespace-nowrap;
+  }
+  .btn-primary { @apply btn bg-plum-700 text-white hover:bg-plum-800; }
+  .btn-gold    { @apply btn bg-gold-500 text-white hover:bg-gold-600; }
+  .btn-ghost   { @apply btn border border-sand-300 bg-white text-ink-soft hover:bg-sand-100; }
+  .btn-sm      { @apply px-2.5 py-1.5 text-xs; }
+
+  .input {
+    @apply w-full rounded-lg border border-sand-300 bg-white px-3 py-2 text-sm
+           text-ink placeholder:text-ink-faint focus:border-plum-400
+           focus:outline-none focus:ring-2 focus:ring-plum-200;
+  }
+  .label { @apply block text-xs font-medium text-ink-soft mb-1.5; }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5
+           text-xs font-medium whitespace-nowrap;
+  }
+  .th {
+    @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase
+           tracking-wider text-ink-faint;
+  }
+  .td { @apply px-4 py-3 text-sm text-ink border-t border-sand-200; }
+}
+
+/* the signature pad must not scroll the page while drawing */
+.sigpad { touch-action: none; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { @apply bg-sand-300 rounded-full; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+
+/* The illustrated couple (components/CoupleJourney.jsx). Every part moves
+   about its own box, so the SVG pieces step, sway and drift independently. */
+.rk-couple * { transform-box: fill-box; }
+.rk-couple .rk-leg { transform-origin: 50% 0%; }
+.rk-couple.is-walking .rk-leg-a { animation: rk-step .9s ease-in-out infinite; }
+.rk-couple.is-walking .rk-leg-b { animation: rk-step .9s ease-in-out infinite reverse; }
+.rk-couple.is-walking .rk-bob { animation: rk-bob .45s ease-in-out infinite alternate; }
+.rk-couple .rk-skirt { transform-origin: 50% 0%; animation: rk-sway 1.8s ease-in-out infinite; }
+.rk-couple .rk-dupatta { transform-origin: 0% 0%; animation: rk-drift 2.6s ease-in-out infinite; }
+.rk-couple .rk-veil { transform-origin: 50% 0%; animation: rk-sway 2.2s ease-in-out infinite reverse; }
+.rk-couple .rk-kalgi { transform-origin: 0% 100%; animation: rk-sway 1.4s ease-in-out infinite; }
+.rk-couple .rk-hearts { opacity: 0; transform-origin: 50% 100%; }
+.rk-couple:not(.is-walking) .rk-hearts { animation: rk-hearts 2.8s ease-out infinite; }
+.rk-couple.is-walking .rk-shadow { animation: rk-shadow .45s ease-in-out infinite alternate; transform-origin: 50% 50%; }
+.rk-mandap .rk-garland { transform-origin: 50% 0%; animation: rk-sway 2.4s ease-in-out infinite; }
+.rk-mandap.is-lit { filter: drop-shadow(0 0 10px rgba(246, 227, 161, .55)); }
+/* the enquiry scene: they stroll across, pause at the mandap, and begin again */
+.rk-stroll { animation: rk-stroll 12s ease-in-out infinite; }
+.rk-lantern { transform-origin: 50% 0%; animation: rk-sway 3.2s ease-in-out infinite; }
+.rk-petal { opacity: 0; animation: rk-fall 7s linear infinite; }
+
+@keyframes rk-step { 0%, 100% { transform: rotate(16deg); } 50% { transform: rotate(-16deg); } }
+@keyframes rk-bob { from { transform: translateY(0); } to { transform: translateY(-2.5px); } }
+@keyframes rk-sway { 0%, 100% { transform: rotate(-1.8deg); } 50% { transform: rotate(1.8deg); } }
+@keyframes rk-drift { 0%, 100% { transform: rotate(0deg) skewY(0deg); } 50% { transform: rotate(3deg) skewY(2deg); } }
+@keyframes rk-shadow { from { transform: scaleX(1); } to { transform: scaleX(.92); } }
+@keyframes rk-hearts { 0% { opacity: 0; transform: translateY(6px) scale(.6); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateY(-22px) scale(1.1); } }
+@keyframes rk-stroll { 0% { left: -30%; } 70% { left: 38%; } 88% { left: 38%; opacity: 1; } 96% { opacity: 0; } 97% { left: -30%; opacity: 0; } 100% { left: -30%; opacity: 1; } }
+@keyframes rk-fall { 0% { opacity: 0; transform: translateY(-10px) rotate(0); } 10% { opacity: .9; } 100% { opacity: 0; transform: translateY(260px) translateX(30px) rotate(320deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-couple *, .rk-mandap *, .rk-stroll, .rk-lantern, .rk-petal { animation: none !important; }
+  .rk-stroll { left: 30%; }
+}
