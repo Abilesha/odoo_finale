@@ -88,13 +88,13 @@ No screenshots are included. The prompt mentioned a reference PDF, but no PDF wa
 
 ```mermaid
 flowchart LR
-  U[Founder / Manager / Vendor / Couple] --> SPA[React 18 SPA<br/>Vite + React Router]
-  SPA -->|JSON REST, Bearer token| API[FastAPI routers]
-  API --> AUTH[Role/capability dependencies<br/>record ownership checks]
-  AUTH --> ORM[SQLAlchemy models/services]
-  ORM --> DB[(PostgreSQL<br/>SQLite local fallback)]
-  API -->|serves frontend/dist| SPA
-  AS[Optional Anthropic API] -. optional assistant response .-> API
+  U["Founder, Manager, Vendor, Couple"] --> SPA["React 18 SPA - Vite and React Router"]
+  SPA -->|"JSON REST with bearer token"| API["FastAPI routers"]
+  API --> AUTH["Role and capability checks"]
+  AUTH --> ORM["SQLAlchemy models and services"]
+  ORM --> DB[("PostgreSQL or local SQLite")]
+  API -->|"Serves frontend build"| SPA
+  AS["Optional Anthropic API"] -.->|"Optional assistant response"| API
 ```
 
 FastAPI mounts the routers and serves `frontend/dist` when that directory exists. During development, Vite serves the SPA on port 5173 and proxies `/api` to the backend on port 8000. Mermaid sources are in [`docs/architecture/`](docs/architecture/).
@@ -232,24 +232,25 @@ For a demo-only database, set `SEED_ON_START=1` and start the app. The demo acco
 
 ```mermaid
 sequenceDiagram
-  participant C as Couple
-  participant F as Founder/Manager
-  participant V as Vendor
-  participant A as API
-  participant D as Database
-  C->>A: Submit enquiry
-  A->>D: Save lead and select owner
-  F->>A: Send agreement / convert after signature
-  A->>D: Create wedding, tasks and milestones
-  F->>A: Send quote request
-  V->>A: Submit normalized quote
-  A->>D: Save quote lines
-  F->>A: Award quote
-  A->>D: Close losing quotes; create vendor contract
-  V->>A: Post progress / availability / cost
-  A->>D: Scope updates to authenticated vendor
-  F->>A: Run event operations and settle vendor bills
-  A->>D: Store operational and settlement records
+  participant Couple
+  participant Staff as Agency Staff
+  participant Vendor
+  participant API as FastAPI
+  participant DB as Database
+
+  Couple->>API: Submit an enquiry
+  API->>DB: Save the lead and assign an owner
+  Staff->>API: Send the agreement
+  API->>DB: Record the agreement and create the wedding
+  Staff->>API: Send a request for quotation
+  Vendor->>API: Submit a quotation
+  API->>DB: Save the quotation details
+  Staff->>API: Award the selected quotation
+  API->>DB: Close other quotations and create a vendor contract
+  Vendor->>API: Submit progress and availability updates
+  API->>DB: Save updates for the authenticated vendor
+  Staff->>API: Manage event operations and vendor bills
+  API->>DB: Store event and settlement records
 ```
 
 ## API reference
