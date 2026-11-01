@@ -154,14 +154,18 @@ The supplied snapshot also contains `frontend/dist/`, a built frontend bundle. `
 
 - Python 3.10 or newer.
 - Node.js compatible with Vite 6 and npm.
-- PostgreSQL for persistent local data. Without `DATABASE_URL`, the backend falls back to a local SQLite file.
+- PostgreSQL for a PostgreSQL-backed setup. If `DATABASE_URL` is not set, the backend uses a local SQLite database file.
 
 ### Configure environment
 
-From the repository root:
+From the repository root, copy the example environment file:
 
 ```bash
+# macOS / Linux / Git Bash
 cp .env.example .env
+
+# Windows PowerShell
+Copy-Item .env.example .env
 ```
 
 Edit `.env` with a local PostgreSQL URL, a long random `SECRET_KEY`, and (for a new empty database) founder bootstrap details. Do not commit `.env`. The `.env.example` file uses placeholders; actual `.env` values are intentionally not documented here.
@@ -180,7 +184,7 @@ Important settings:
 
 ### One-command local run
 
-On macOS/Linux or a shell with Bash:
+On macOS/Linux, or on Windows using Git Bash or another Bash-compatible shell:
 
 ```bash
 ./run.sh
@@ -204,11 +208,11 @@ Terminal 2 - Vite:
 
 ```bash
 cd frontend
-npm ci
+npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. `frontend/vite.config.js` proxies `/api` to `http://localhost:8000`.
+Open `http://localhost:5173`. `frontend/vite.config.js` proxies `/api` requests to `http://localhost:8000`.
 
 ### Schema and demo data
 
