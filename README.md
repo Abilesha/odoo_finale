@@ -80,9 +80,6 @@ The implementation aims to:
 
 The vendor portal is present in `frontend/src/pages/vendor/` and `/api/vendor-portal`. Vendors can see requests and contracted jobs, submit or decline prices, report job progress, maintain availability and capacity, review aggregated earnings, and update their own profile. The supplied code does **not** include a dedicated vendor arrival-check-in screen/route, a vendor task-status endpoint, or a vendor notification feed. Run-sheet check-in is available in the staff operations API. Earnings are summarized by contract/job; there is no vendor-facing invoice ledger endpoint in this portal.
 
-## Screenshots
-
-No screenshots are included. The prompt mentioned a reference PDF, but no PDF was present in the supplied files. I did not substitute screenshots from another application or fabricate UI images. The available application could not be opened in the documentation browser with the isolated local database instance, so the screenshot capture requirement remains outstanding. See [`docs/screenshots/README.md`](docs/screenshots/README.md) and [`DOCUMENTATION_REPORT.md`](DOCUMENTATION_REPORT.md).
 
 ## Architecture
 
